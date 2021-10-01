@@ -1,0 +1,7 @@
+C:\Users\ivanv\source\repos\CarAddingApplication\obj\Debug\CarAddingApplication.csproj.AssemblyReference.cache
+C:\Users\ivanv\source\repos\CarAddingApplication\obj\Debug\CarAddingApplication.csproj.CoreCompileInputs.cache
+C:\Users\ivanv\source\repos\CarAddingApplication\bin\Debug\CarAddingApplication.exe.config
+C:\Users\ivanv\source\repos\CarAddingApplication\bin\Debug\CarAddingApplication.exe
+C:\Users\ivanv\source\repos\CarAddingApplication\bin\Debug\CarAddingApplication.pdb
+C:\Users\ivanv\source\repos\CarAddingApplication\obj\Debug\CarAddingApplication.exe
+C:\Users\ivanv\source\repos\CarAddingApplication\obj\Debug\CarAddingApplication.pdb
