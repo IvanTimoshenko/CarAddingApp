@@ -10,6 +10,11 @@ namespace CarAddingApplication.WebDriverActions
 {
     public class CarAddingActions
     {
+        public CarAddingActions(IWebDriver webDriver)
+        {
+            this.webDriver = webDriver;
+        }
+
         IWebDriver webDriver;
 
         static Input InputCarNumber { get; } = new Input("//input[@id='number']");
@@ -18,9 +23,5 @@ namespace CarAddingApplication.WebDriverActions
         static Select SelectCompany { get; } = new Select("//select[@id='company_id']");
         static Input InputModel { get; } = new Input("//input[@id='model']");
         static Input InputBrand { get; } = new Input("//input[@id='brand']");
-        public CarAddingActions(IWebDriver webDriver)
-        {
-            this.webDriver = webDriver;
-        }
     }
 }
