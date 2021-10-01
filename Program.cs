@@ -1,4 +1,5 @@
-﻿using Microsoft.Office.Interop.Excel;
+﻿using CarAddingApplication.Utils;
+using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -10,28 +11,33 @@ namespace CarAddingApplication
 {
     class Program
     {
+        public static TimeSpan WebDriverWait { get; set; } = TimeSpan.FromSeconds(20);
+
+        /// <summary> Текущий WebDriver </summary>
+        public static WebDriver WebDriver { get; set; }
+
         static void Main(string[] args)
         {
+            /*
             KillAllExcelProcesses();
             
             var ex = new ExcelReader();
-            var result = ex.GetAllValues();
-            if (result.Item2)
+            int i = 1;
+            foreach (var el in ex.CarList)
             {
-                KillAllExcelProcesses();
-                return;
-            }
-            foreach (var el in result.Item1)
-            {
+                Console.Write($"{i}. ");
                 foreach (var elem in el)
                 {
                     Console.Write($"{elem}, ");
                 }
                 Console.WriteLine();
+                i++;
             }
             Console.WriteLine("aaaaa");
             Console.ReadKey();
             KillAllExcelProcesses();
+            */
+
         }
 
         static void KillAllExcelProcesses()

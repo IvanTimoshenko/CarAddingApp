@@ -10,10 +10,17 @@ namespace CarAddingApplication
 {
     public class ExcelReader
     {
-        Application xlApp;
-        Workbook xlWorkbook;
-        Worksheet xlWorksheet;
-        ExcelReaderMessages Message = new ExcelReaderMessages();
+        static Application xlApp;
+        static Workbook xlWorkbook;
+        static Worksheet xlWorksheet;
+        static ExcelReaderMessages Message = new ExcelReaderMessages();
+        public int RangeOfDocument { get; private set; }
+
+        public List<int> IndexesOfBadRows { get; private set; } = new List<int>();
+
+        public List<List<string>> BadRows { get; private set; } = new List<List<string>>();
+
+        public List<List<string>> CarList { get; private set; } = new List<List<string>>();
 
         public ExcelReader()
         {
@@ -23,66 +30,76 @@ namespace CarAddingApplication
             // Unhide All Cells and clear formats
             xlWorksheet.Columns.ClearFormats();
             xlWorksheet.Rows.ClearFormats();
+
+            GetRangeOfDocument();
+            Message.PrintEmptyCellErrorMessage(BadRows);
+            GetAllValues();
+            int a = 0;
         }
         
-        public Tuple<List<List<string>>, bool> GetAllValues()
+        private void GetAllValues()
         {
-            var list = new List<List<string>>();
-            bool stopSearching = false;
-            bool emptyCellDetected = false;
-            for (int row = Config.RowStartValue; !stopSearching && !emptyCellDetected ; row++)
+            for (int row = Config.RowStartValue; row < RangeOfDocument + Config.RowStartValue; row++)
             {
+                bool badRow = false;
+                for (int i = 0; i < BadRows.Count; i++)
+                {
+                    if (row == IndexesOfBadRows[i])
+                    {
+                        badRow = true;
+                    }
+                    
+                }
+                if (badRow == true)
+                {
+                    continue;
+                }
                 var temp = new List<string>();
                 for (int column = Config.ColumnStartValue; column <= Config.ColumnEndValue; column++)
                 {
-                    var value = GetValueOfCell(row, column);
-                    if (value.Item1 == string.Empty)
-                    {
-                        Message.PrintEmptyCellErrorMessage(row, column);
-                        emptyCellDetected = true;
-                        break;
-                    }
-                    if (value.Item2)
-                    {
-                        Message.PrintEndOfDocumentMes(row);
-                        stopSearching = true;
-                        break;
-                    }
-                    temp.Add(value.Item1);
+                    temp.Add(GetValueOfCell(row, column));
                 }
-                list.Add(temp);
+                CarList.Add(temp);
             }
-            return new Tuple<List<List<string>>, bool>(list, emptyCellDetected);
+            Message.PrintEndOfDocumentMes(RangeOfDocument);
         }
 
-        private Tuple<string, bool> GetValueOfCell(int row, int column)
+        private List<string> GetSpecificRow(int row)
         {
-            string value = string.Empty;
-            bool end = false;
+            List<string> values = new List<string>();
+            for (int column = Config.ColumnStartValue; column <= Config.ColumnEndValue; column++)
+            {
+                string value = string.Empty;
+                try
+                {
+                    value = (xlWorksheet.Cells[row, column] as Range).Value2.ToString();
+                } catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException) { };
+                values.Add(value);
+            }
+            return values;
+        }
+
+
+        private string GetValueOfCell(int row, int column)
+        {
             try
             {
-                value = (xlWorksheet.Cells[row, column] as Range).Value2.ToString();
-                return new Tuple<string, bool>(value, end);
+                return (xlWorksheet.Cells[row, column] as Range).Value2.ToString();
             }
             catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
             {
-                if (column == Config.ColumnStartValue)
-                {
-                    return new Tuple<string, bool>(value, !end);
-                }
+                throw;
             }
-            value = string.Empty;
-            return new Tuple<string, bool>(value, !end);
         }
 
-        private bool IsDocumentEnded(int row, int column)
+        private bool IsDocumentEnded(int row)
         {
             bool valueFound = false;
             for (int i = Config.ColumnStartValue; i < Config.ColumnEndValue && valueFound == false; i++)
             {
                 try
                 {
-                    (xlWorksheet.Cells[row, column] as Range).Value2.ToString();
+                    (xlWorksheet.Cells[row, i] as Range).Value2.ToString();
                     valueFound = true;
                     break;
                 }
@@ -96,6 +113,41 @@ namespace CarAddingApplication
                 return false;
             }
             return true;
+        }
+
+        private void GetRangeOfDocument()
+        {
+            int rows = 0;
+            bool stopSearching = false;
+            for (int row = Config.RowStartValue; stopSearching == false; row++)
+            {
+                for (int column = Config.ColumnStartValue; column <= Config.ColumnEndValue && stopSearching == false; column++)
+                {
+                    try
+                    {
+                        (xlWorksheet.Cells[row, column] as Range).Value2.ToString();
+                    }
+                    catch (Microsoft.CSharp.RuntimeBinder.RuntimeBinderException)
+                    {
+                        switch (IsDocumentEnded(row))
+                        {
+                            case true:
+                                stopSearching = true;
+                                break;
+                            case false:
+                                IndexesOfBadRows.Add(row);
+                                BadRows.Add(GetSpecificRow(row));
+                                break;
+                        }
+                    }
+                }
+                if (stopSearching)
+                {
+                    RangeOfDocument = rows;
+                    break;
+                }
+                rows++;
+            }
         }
     }
 }

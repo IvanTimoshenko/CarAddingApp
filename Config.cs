@@ -12,5 +12,12 @@ namespace CarAddingApplication
         public static int ColumnStartValue = 1;
         public static int ColumnEndValue = 6;
         public static string ExcelFilePath = @"C:\Users\ivanv\Desktop\CarAdder\test.xlsx";
+
+        public static string AdminLogin { get; } = "info@anywash.ru";
+        public static string AdminPassword { get; } = "anywash123";
+
+        public static TimeSpan WebDriverWait { get; set; } = TimeSpan.FromSeconds(20);
+
+        public static string MainPageURL { get; } = "https://anywash.info/";
     }
 }
