@@ -1,4 +1,5 @@
-﻿using CarAddingApplication.Utils;
+﻿using CarAddingApplication.ObjectCar;
+using CarAddingApplication.Utils;
 using Microsoft.Office.Interop.Excel;
 using System;
 using System.Collections.Generic;
@@ -18,7 +19,7 @@ namespace CarAddingApplication
 
         static void Main(string[] args)
         {
-            /*
+            
             KillAllExcelProcesses();
             
             var ex = new ExcelReader();
@@ -33,11 +34,13 @@ namespace CarAddingApplication
                 Console.WriteLine();
                 i++;
             }
-            Console.WriteLine("aaaaa");
-            Console.ReadKey();
             KillAllExcelProcesses();
-            */
-
+            List<Car> cars = new List<Car>();
+            foreach (var el in ex.CarList)
+            {
+                cars.Add(new Car(el));
+            }
+            int a = 0;
         }
 
         static void KillAllExcelProcesses()

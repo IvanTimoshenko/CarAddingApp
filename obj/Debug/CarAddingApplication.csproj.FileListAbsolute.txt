@@ -5,3 +5,8 @@ C:\Users\ivanv\source\repos\CarAddingApplication\bin\Debug\CarAddingApplication.
 C:\Users\ivanv\source\repos\CarAddingApplication\bin\Debug\CarAddingApplication.pdb
 C:\Users\ivanv\source\repos\CarAddingApplication\obj\Debug\CarAddingApplication.exe
 C:\Users\ivanv\source\repos\CarAddingApplication\obj\Debug\CarAddingApplication.pdb
+C:\Users\ivanv\source\repos\CarAddingApplication\bin\Debug\WebDriver.dll
+C:\Users\ivanv\source\repos\CarAddingApplication\bin\Debug\WebDriver.Support.dll
+C:\Users\ivanv\source\repos\CarAddingApplication\bin\Debug\WebDriver.xml
+C:\Users\ivanv\source\repos\CarAddingApplication\bin\Debug\WebDriver.Support.xml
+C:\Users\ivanv\source\repos\CarAddingApplication\obj\Debug\CarAddingApplication.csproj.CopyComplete
